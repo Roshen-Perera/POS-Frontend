@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POS</title>
+  <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
+    body {
+      background-image: url("assets/images/Wallpaper(36).jpg");
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: 100% 100%;
+    }
+
+    * {
+      font-family: "Outfit", sans-serif;
+      font-optical-sizing: auto;
+      font-style: normal;
+    }
+
+    .navbar {
+      width: 98vw;
+      background-color: rgba(255, 255, 255, 0.486);
+      border-radius: 10px 10px 10px 10px;
+
+      left: 0;
+      right: 0;
+      top: 14px;
+      margin: auto;
+    }
+
+    .nav-link {
+      font-weight: bolder;
+    }
+
+    .nav-link:hover {
+      cursor: pointer;
+
+      color: #32008E;
+    }
+
+    .sidebar {
+      background-color: rgba(255, 255, 255, 0.486);
+    }
+
+    .pane {
+      width: 98vw;
+      height: 83vh;
+      position: absolute;
+      border-radius: 10px 10px 10px 10px;
+
+      left: 0;
+      right: 0;
+      bottom: 15px;
+      margin: auto;
+    }
+
+    .custom-nav {
+      width: 75px;
+      background-color: white;
+      color: #32008E;
+      border: 1px solid #32008E;
+      border-radius: 10px 10px 10px 10px;
+      position: relative;
+      left: 17px;
+    }
+
+    .custom-nav:hover {
+      background-color: #32008E;
+      color: white;
+      border-radius: 10px 10px 10px 10px;
+    }
+
+    span {
+      cursor: pointer;
+    }
+  </style>
+  <link rel="stylesheet" href="assets/styles/login.css">
+  <link rel="stylesheet" href="assets/styles/register.css">
+  <link rel="stylesheet" href="assets/styles/dashboard.css">
+  <link rel="stylesheet" href="assets/styles/customer.css">
+  <link rel="stylesheet" href="assets/styles/product.css">
+  <link rel="stylesheet" href="assets/styles/order.css">
+  <link rel="stylesheet" href="assets/styles/neworder.css">
+</head>
+
+<body>
+  <div id="navigation">
+    <nav class="navbar navbar-expand-lg fixed-top">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="https://pos.roshen.serv00.net">
+          <img src="assets/images/pos.png" alt="Bootstrap" width="100px" height="40px">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+          aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="sidebar offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
+          aria-labelledby="offcanvasNavbarLabel">
+          <div class="offcanvas-header">
+            <img src="assets/images/pos.png" alt="Bootstrap" width="100px" height="40px">
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+              <li class="nav-item">
+                <span id="dashboard-nav" class="nav-link" aria-current="page">Home</span>
+              </li>
+              <li class="nav-item">
+                <span id="customer-nav" class=" nav-link" aria-current="page">Customers</span>
+              </li>
+              <li class="nav-item">
+                <span id="product-nav" class="nav-link" aria-current="page">Products</span>
+              </li>
+              <li class="nav-item">
+                <span id="order-nav" class="nav-link" aria-current="page">Orders</span>
+              </li>
+              <li class="nav-item">
+                <span id="logout-nav" class="nav-link custom-nav" aria-current="page">Logout</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+  <div id="login-page">
+    <div class="area">
+      <div class="img">
+        <img src="assets/images/pos.png" alt="" width="120" height="50">
+      </div>
+      <form>
+        <div class="col-md-6">
+          <input id="login-custom-user" type="text" class="form-control" id="inputName" placeholder="Enter Your Name">
+        </div>
+        <div>
+          <input id="login-custom-pw" type="password" id="inputPassword5" class="form-control"
+            aria-describedby="passwordHelpBlock" placeholder="Enter Your password">
+        </div>
+        <span id="login-btn" type="login-button" class="btn btn-primary btn-lg">Sign in</span>
+      </form>
+      <div class="else">
+        <p class="else-label">Don't have an Account ?</p>
+        <span id="reg-link" class="else-link">Sign Up</span>
+      </div>
+    </div>
+  </div>
+  <div id="register-page">
+    <div class="area">
+      <div class="img">
+        <img src="assets/images/pos.png" alt="" width="120" height="50">
+      </div>
+
+      <form>
+        <div class="col-md-6">
+          <input id="reg-custom-user" type="text" class="form-control" id="userName" placeholder="Enter Your Name">
+        </div>
+        <div class="mb-3">
+          <input id="reg-custom-email" type="email" class="form-control" id="emailAddress"
+            aria-describedby="emailHelp" placeholder="Enter you Email Address">
+        </div>
+        <div>
+          <input id="reg-custom-pw" type="password" id="inputPassword" class="form-control"
+            aria-describedby="passwordHelpBlock" placeholder="Enter Your password">
+        </div>
+        <span id="reg-btn" type="button" class="btn btn-primary btn-lg">Register</span>
+      </form>
+      <div class="else">
+        <p class="reg-else-label">Already have an Account ?</p>
+        <span id="login-link" class="reg-else-link">Sign In</span>
+      </div>
+    </div>
+  </div>
+  </div>
+  <div id="dashboard-page">
+    <div class="pane">
+      <div class="card-group">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Customers</h5>
+            <label id="customerCount" class="card-text"></label>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Products</h5>
+            <label id="productCount" class="card-text"></label>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Orders</h5>
+            <label id="orderCount" class="card-text"></label>
+          </div>
+        </div>
+      </div>
+      <table class="dash-custom-table table table-bordered">
+        <thead>
+        <tr>
+          <th scope="col">Order ID</th>
+          <th scope="col">Product Name</th>
+          <th scope="col">Product Type</th>
+          <th scope="col">QTY</th>
+          <th scope="col">Price</th>
+          <th scope="col">Total</th>
+        </tr>
+        </thead>
+        <tbody id="dash-table">
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div id="customer-page">
+    <div class="pane">
+      <section>
+        <form class="needs-validation" novalidate>
+          <div class="col-md-6 col-sm-12">
+            <input id="cus-custom-id" type="text" class="form-control" placeholder="ID">
+<!--            <label id="customerIdCheck" style="color: red;">-->
+<!--              **ID is missing-->
+<!--            </label>-->
+          </div>
+          <div class="col-md-6 col-sm-12">
+            <input id="cus-custom-user" type="text" class="form-control" placeholder="Name" required>
+<!--            <label id="customerUserCheck" style="color: red;">-->
+<!--              **Username is missing-->
+<!--            </label>-->
+          </div>
+          <div class="col-md-6 col-sm-12">
+            <input id="cus-custom-address" type="text" class="form-control" placeholder="Address" required>
+<!--            <label id="customerAddressCheck" style="color: red;">-->
+<!--              **Address is missing-->
+<!--            </label>-->
+          </div>
+          <div class="col-md-6 col-sm-12">
+            <input id="cus-custom-mobile" type="number" class="form-control" placeholder="Mobile Number" required>
+<!--            <label id="customerMobileCheck" style="color: red;">-->
+<!--              **Mobile Number is missing-->
+<!--            </label>-->
+          </div>
+          <!--<div class="col-md-6 col-sm-12">
+            <input id="cus-custom-search" type="text" class="form-control" placeholder="Search">
+          </div>-->
+          <div class="cus-custom-btn">
+            <button id="btnSearchCustomer" type="button" class="btn btn-primary">Search</button>
+            <button class="btn btn-primary" id="customer-add-btn" type="button">Add</button>
+            <button id="customer-delete-btn" class="btn btn-primary" type="button">Delete</button>
+            <button id="customer-update-btn" class="btn btn-primary" type="button">Update</button>
+            <button id="customer-clear-btn" class="btn btn-primary" type="button">Clear</button>
+          </div>
+        </form>
+      </section>
+      <section>
+        <div class="div-table">
+          <table class="cus-custom-table table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Address</th>
+                <th scope="col">Mobile Number</th>
+              </tr>
+            </thead>
+            <tbody id="customer-table">
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </div>
+  <div id="product-page">
+    <div class="pane">
+      <form>
+        <div class="col-md-6">
+          <input id="pro-custom-id" type="text" class="form-control" placeholder="ID">
+        </div>
+        <div class="col-md-6">
+          <input id="pro-custom-name" type="text" class="form-control" placeholder="Product Name">
+        </div>
+        <div class="col-md-6">
+          <input id="pro-custom-type" type="text" class="form-control" placeholder="Product Type">
+        </div>
+        <div class="col-md-6">
+          <input id="pro-custom-qty" type="text" class="form-control" placeholder="QTY">
+        </div>
+        <div class="col-md-6">
+          <input id="pro-custom-price" type="text" class="form-control" placeholder="Price">
+        </div>
+        <!--<div class="col-md-6">
+          <input id="pro-custom-search" type="text" class="form-control" placeholder="Search">
+        </div>-->
+      </form>
+      <div class="pro-custom-btn">
+        <button id="btnSearchProduct" type="button" class="btn btn-primary">Search</button>
+        <button id="product-add-btn" class="btn btn-primary" type="button">Add</button>
+        <button id="product-delete-btn" class="btn btn-primary" type="button">Delete</button>
+        <button id="product-update-btn" class="btn btn-primary" type="button">Update</button>
+        <button id="product-clear-btn" class="btn btn-primary" type="button">Clear</button>
+      </div>
+      <div class="div-table">
+        <table class="pro-custom-table table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Product Name</th>
+              <th scope="col">Product Type</th>
+              <th scope="col">QTY</th>
+              <th scope="col">Price</th>
+            </tr>
+          </thead>
+          <tbody id="product-table">
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div id="order-page">
+    <div class="pane">
+      <table class="order-custom-table table table-striped table-bordered">
+        <thead>
+        <tr>
+          <th scope="col">Order ID</th>
+          <th scope="col">Product Name</th>
+          <th scope="col">Product Type</th>
+          <th scope="col">QTY</th>
+          <th scope="col">Price</th>
+          <th scope="col">Total</th>
+        </tr>
+        </thead>
+        <tbody id="order-table">
+        </tbody>
+      </table>
+      <div class="order-custom-btn">
+        <button id="neworder-btn" class="btn btn-primary" type="button">Edit Orders</button>
+      </div>
+    </div>
+  </div>
+  <div id="neworder-page">
+    <div class="pane">
+      <div class="detail">
+        <form class="row g-3 needs-validation" novalidate>
+          <div class="row g-3">
+            <div class="col-md-3">
+              <label class="form-label">Order ID: </label>
+              <input type="text" class="form-control" id="orderId" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Order Date: </label>
+              <label id="orderDate" class="form-label cus-label"></label>
+            </div>
+          </div>
+          <div class="row g-3">
+            <div class="col-md-3">
+              <label for="customerSelectID" class="form-label">Customer ID</label>
+              <select id="customerSelectID" class="form-select" required>
+                <option selected disabled value="">Choose...</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label id="ado" for="customerName" class="form-label">Customer name</label>
+              <input type="text" class="form-control" id="customerName" readonly>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <label for="productSelectID" class="form-label">Product ID</label>
+            <select class="form-select" id="productSelectID" required>
+              <option selected disabled value="">Choose...</option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <label for="productName" class="form-label">Product name</label>
+            <input type="text" class="form-control" id="productName" required>
+          </div>
+          <div class="col-md-2">
+            <label for="productType" class="form-label">Product Type</label>
+            <input type="text" class="form-control" id="productType" required>
+          </div>
+          <div class="col-md-2">
+            <label for="productQTY" class="form-label">QTY on Hand</label>
+            <input type="text" class="form-control" id="productQTY" readonly>
+          </div>
+          <div class="col-md-2">
+            <label for="productQtyNeeded" class="form-label">QTY</label>
+            <input type="text" class="form-control" id="productQtyNeeded" required>
+          </div>
+          <div class="col-md-2">
+            <label for="productPrice" class="form-label">Price</label>
+            <input type="text" class="form-control" id="productPrice" required>
+          </div>
+            <div class="btn-grp">
+              <button id="addToCart" type="button" class="btn btn-success">Place Order</button>
+              <button id="removeFromCart" type="button" class="btn btn-danger">Remove from Cart</button>
+              <button id="clear" type="button" class="btn btn-warning">Clear</button>
+            </div>
+        </form>
+        <div class="div-table">
+          <table class="neworder-custom-table table table-bordered">
+            <thead>
+            <tr>
+              <th scope="col">Order ID</th>
+              <th scope="col">Product Name</th>
+              <th scope="col">Product Type</th>
+              <th scope="col">QTY</th>
+              <th scope="col">Price</th>
+              <th scope="col">Total</th>
+            </tr>
+            </thead>
+            <tbody id="cart-table">
+            </tbody>
+          </table>
+        </div>
+      </div>
+      </div>
+
+  </div>
+  <script
+          src="assets/lib/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"> </script>
+  <script>
+    $("#navigation").css({ display: "none" });
+    $("#login-page").css({ display: "block" });
+    $("#register-page").css({ display: "none" });
+    $("#dashboard-page").css({ display: "none" });
+    $("#customer-page").css({ display: "none" });
+    $("#product-page").css({ display: "none" });
+    $("#order-page").css({ display: "none" });
+    $("#neworder-page").css({ display: "none" });
+
+    // $('#login-btn').on('click', () => {
+    //   $("#navigation").css({ display: "block" });
+    //   $("#login-page").css({ display: "none" });
+    //   $("#register-page").css({ display: "none" });
+    //   $("#dashboard-page").css({ display: "block" });
+    //   $("#customer-page").css({ display: "none" });
+    //   $("#product-page").css({ display: "none" });
+    //   $("#order-page").css({ display: "none" });
+    //   $("#neworder-page").css({ display: "none" });
+    // });
+
+    $('#reg-link').on('click', () => {
+
+      $("#navigation").css({ display: "none" });
+      $("#login-page").css({ display: "none" });
+      $("#register-page").css({ display: "block" });
+      $("#dashboard-page").css({ display: "none" });
+      $("#customer-page").css({ display: "none" });
+      $("#product-page").css({ display: "none" });
+      $("#order-page").css({ display: "none" });
+      $("#neworder-page").css({ display: "none" });
+    });
+
+    $('#login-link').on('click', () => {
+      $("#navigation").css({ display: "none" });
+      $("#login-page").css({ display: "block" });
+      $("#register-page").css({ display: "none" });u
+      $("#dashboard-page").css({ display: "none" });
+      $("#customer-page").css({ display: "none" });
+      $("#product-page").css({ display: "none" });
+      $("#order-page").css({ display: "none" });
+      $("#neworder-page").css({ display: "none" });
+    });
+
+    $('#dashboard-nav').on('click', () => {
+      $("#navigation").css({ display: "block" });
+      $("#login-page").css({ display: "none" });
+      $("#register-page").css({ display: "none" });
+      $("#dashboard-page").css({ display: "block" });
+      $("#customer-page").css({ display: "none" });
+      $("#product-page").css({ display: "none" });
+      $("#order-page").css({ display: "none" });
+      $("#neworder-page").css({ display: "none" });
+    });
+    $('#customer-nav').on('click', () => {
+      $("#navigation").css({ display: "block" });
+      $("#login-page").css({ display: "none" });
+      $("#register-page").css({ display: "none" });
+      $("#dashboard-page").css({ display: "none" });
+      $("#customer-page").css({ display: "block" });
+      $("#product-page").css({ display: "none" });
+      $("#order-page").css({ display: "none" });
+      $("#neworder-page").css({ display: "none" });
+    });
+    $('#product-nav').on('click', () => {
+      $("#navigation").css({ display: "block" });
+      $("#login-page").css({ display: "none" });
+      $("#register-page").css({ display: "none" });
+      $("#dashboard-page").css({ display: "none" });
+      $("#customer-page").css({ display: "none" });
+      $("#product-page").css({ display: "block" });
+      $("#order-page").css({ display: "none" });
+      $("#neworder-page").css({ display: "none" });
+    });
+    $('#order-nav').on('click', () => {
+      $("#navigation").css({ display: "block" });
+      $("#login-page").css({ display: "none" });
+      $("#register-page").css({ display: "none" });
+      $("#dashboard-page").css({ display: "none" });
+      $("#customer-page").css({ display: "none" });
+      $("#product-page").css({ display: "none" });
+      $("#order-page").css({ display: "block" });
+      $("#neworder-page").css({ display: "none" });
+    });
+    $('#logout-nav').on('click', () => {
+      $("#navigation").css({ display: "none" });
+      $("#login-page").css({ display: "block" });
+      $("#register-page").css({ display: "none" });
+      $("#dashboard-page").css({ display: "none" });
+      $("#customer-page").css({ display: "none" });
+      $("#product-page").css({ display: "none" });
+      $("#order-page").css({ display: "none" });
+      $("#neworder-page").css({ display: "none" });
+    });
+    $('#neworder-btn').on('click', () => {
+      $("#navigation").css({ display: "block" });
+      $("#login-page").css({ display: "none" });
+      $("#register-page").css({ display: "none" });
+      $("#dashboard-page").css({ display: "none" });
+      $("#customer-page").css({ display: "none" });
+      $("#product-page").css({ display: "none" });
+      $("#order-page").css({ display: "none" });
+      $("#neworder-page").css({ display: "block" });
+    });
+
+  </script>
+  <script type="module" src="controller/RegisterController.js"></script>
+  <script type="module" src="controller/LoginController.js"></script>
+  <script type="module" src="controller/CustomerController.js"></script>
+  <script type="module" src="controller/ProductController.js"></script>
+  <script type="module" src="controller/PlaceOrderController.js"></script>
+</body>
+</html>
