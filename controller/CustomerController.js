@@ -124,28 +124,47 @@ $('#customer-add-btn').on('click', () => {
         let customerAddress = $('#cus-custom-address').val();
         let customerMobile = $('#cus-custom-mobile').val();
 
-        var record = `<tr>
-                            <td class="cus_id" scope="row">${customerId}</td>     
-                            <td class="cus_name">${customerName}</td>
-                            <td class="cus_address">${customerAddress}</td>     
-                            <td class="cus_mobile">${customerMobile}</td>
-                        </tr>`
-        $('#customer-table').append(record);
+        // var record = `<tr>
+        //                     <td class="cus_id" scope="row">${customerId}</td>
+        //                     <td class="cus_name">${customerName}</td>
+        //                     <td class="cus_address">${customerAddress}</td>
+        //                     <td class="cus_mobile">${customerMobile}</td>
+        //                 </tr>`
+        // $('#customer-table').append(record);
+        //
+        // let customer = new CustomerModel(customerId, customerName, customerAddress, customerMobile);
 
-        let customer = new CustomerModel(customerId, customerName, customerAddress, customerMobile);
+        let customer = {
+            id: customerId,
+            name: customerName,
+            address: customerAddress,
+            phone: customerMobile
+        }
+        const customerJSON = JSON.stringify(customer)
+        console.log(customerJSON);
+        $.ajax({
+            url: "http://localhost:8081/POS_BackEnd/customer",
+            type: "POST",
+            data : customerJSON,
+            headers: {"Content-Type": "application/json"},
+            success: (res) => {
+                console.log(JSON.stringify(res));
+            },
+            error: (res) => {
+                console.error(res);
+            }
+            // data: JSON.stringify({
+            //     "id": 3,
+            //     "name": "Hulk",
+            //     "address": "NYC",
+            //     "phone": "0760199035"
+            // }),
+        });
 
-
-        // let customer = {
-        //     cusId: customerId,
-        //     cusName: customerName,
-        //     cusAddress: customerAddress,
-        //     cusMobile: customerMobile
-        // }
-
-        customers.push(customer)
-        loadTableCustomer();
-        totalCustomers();
-        console.log(customers);
+        //customers.push(customer)
+        //loadTableCustomer();
+        //totalCustomers();
+        console.log(customer);
         clearFields();
     } else {
         return false;
@@ -198,11 +217,33 @@ $("#customer-update-btn").on('click', () => {
         var customerAddress = $('#cus-custom-address').val();
         var customerMobile = $('#cus-custom-mobile').val();
 
-        let cusObj = customers[recordIndex];
-        cusObj.cusId = customerId;
-        cusObj.cusName = customerName;
-        cusObj.cusAddress = customerAddress;
-        cusObj.cusMobile = customerMobile;
+        let customer = {
+            id: customerId,
+            name: customerName,
+            address: customerAddress,
+            phone: customerMobile
+        }
+        const customerJSON = JSON.stringify(customer)
+        console.log(customerJSON);
+        $.ajax({
+            url: "http://localhost:8081/POS_BackEnd/customer",
+            type: "PUT",
+            data : customerJSON,
+            headers: {"Content-Type": "application/json"},
+            success: (res) => {
+                console.log(JSON.stringify(res));
+            },
+            error: (res) => {
+                console.error(res);
+            }
+            // data: JSON.stringify({
+            //     "id": 3,
+            //     "name": "Hulk",
+            //     "address": "NYC",
+            //     "phone": "0760199035"
+            // }),
+        });
+
 
         loadTableCustomer();
         clearFields();
@@ -212,7 +253,21 @@ $("#customer-update-btn").on('click', () => {
 });
 
 $('#customer-delete-btn').on('click', () => {
-    customers.splice(recordIndex, 1);
+    // customers.splice(recordIndex, 1);
+
+    let customerId = $('#cus-custom-id').val();
+
+    $.ajax({
+        url: "http://localhost:8081/POS_BackEnd/customer?id="+customerId,
+        type: "DELETE",
+        headers: {"Content-Type": "application/json"},
+        success: (res) => {
+            console.log(JSON.stringify(res));
+        },
+        error: (res) => {
+            console.error(res);
+        }
+    });
     totalCustomers();
     loadTableCustomer();
     clearFields();
