@@ -1,5 +1,5 @@
 import ProductModel from "/model/ProductModel.js";
-import {customers, products} from "/db/DB.js";
+import {products} from "/db/DB.js";
 
 var recordIndex = undefined;
 
@@ -117,18 +117,34 @@ $('#product-add-btn').on('click', () => {
         var productQty = $('#pro-custom-qty').val();
         var productPrice = $('#pro-custom-price').val();
 
-        var record = `<tr>
-                            <td class="pro_id" scope="row">${productId}</td>     
-                            <td class="pro_name">${productName}</td>
-                            <td class="pro_type">${productType}</td>     
-                            <td class="pro_qty">${productQty}</td>
-                            <td class="pro_price">${productPrice}</td>
-                        </tr>`
-        $('#product-table').append(record);
+        let product = {
+            id: productId,
+            name: productName,
+            type: productType,
+            qty: productQty,
+            price: productPrice
+        }
 
-        let product = new ProductModel(productId, productName, productType, productQty, productPrice);
-
-        products.push(product)
+        const productJSON = JSON.stringify(product)
+        console.log(productJSON);
+        $.ajax({
+            url: "http://localhost:8081/POS_BackEnd/product",
+            type: "POST",
+            data : productJSON,
+            headers: {"Content-Type": "application/json"},
+            success: (res) => {
+                console.log(JSON.stringify(res));
+            },
+            error: (res) => {
+                console.error(res);
+            }
+            // data: JSON.stringify({
+            //     "id": 3,
+            //     "name": "Hulk",
+            //     "address": "NYC",
+            //     "phone": "0760199035"
+            // }),
+        });
         loadTableProduct();
         totalProducts();
         console.log(products);
@@ -177,19 +193,58 @@ $("#product-update-btn").on('click', () => {
     var productQty = $('#pro-custom-qty').val();
     var productPrice = $('#pro-custom-price').val();
 
-    let proObj = products[recordIndex];
-    proObj.proId = productId;
-    proObj.proName = productName;
-    proObj.proType = productType;
-    proObj.proQty = productQty;
-    proObj.proPrice = productPrice;
+    let product = {
+        id: productId,
+        name: productName,
+        type: productType,
+        qty: productQty,
+        price: productPrice
+    }
+
+    const productJSON = JSON.stringify(product)
+    console.log(productJSON);
+    $.ajax({
+        url: "http://localhost:8081/POS_BackEnd/product",
+        type: "PUT",
+        data : productJSON,
+        headers: {"Content-Type": "application/json"},
+        success: (res) => {
+            console.log(JSON.stringify(res));
+        },
+        error: (res) => {
+            console.error(res);
+        }
+        // data: JSON.stringify({
+        //     "id": 3,
+        //     "name": "Hulk",
+        //     "address": "NYC",
+        //     "phone": "0760199035"
+        // }),
+    });
 
     loadTableProduct();
     clearFields();
 });
 
 $('#product-delete-btn').on('click', () => {
-    products.splice(recordIndex, 1);
+    // products.splice(recordIndex, 1);
+    let productId = $('#pro-custom-id').val();
+
+    $.ajax({
+        url: "http://localhost:8081/POS_BackEnd/product?id="+productId,
+        type: "DELETE",
+        headers: {"Content-Type": "application/json"},
+        success: (res) => {
+            console.log(JSON.stringify(res));
+        },
+        error: (res) => {
+            console.error(res);
+        }
+    });
+
+
+
+
     loadTableProduct();
     totalProducts();
     clearFields();
