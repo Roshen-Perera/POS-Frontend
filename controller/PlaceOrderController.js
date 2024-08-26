@@ -16,16 +16,30 @@ $('#orderDate').text(orderDate);
 
 function updateCustomerIDs() {
     $('#customerSelectID').empty();
-    const defaultOption = document.createElement("option");
 
+    // Create and append default option
+    const defaultOption = document.createElement("option");
     defaultOption.text = "Select customer ID";
+    defaultOption.value = ""; // Set an empty value for the default option
     $('#customerSelectID').append(defaultOption);
-        
-    customers.forEach(customer => {
-        const option = document.createElement("option");
-        option.value = JSON.stringify(customer);
-        option.text = customer.cusId;
-        $('#customerSelectID').append(option);
+
+    // Fetch customer data from the server
+    $.ajax({
+        url: "http://localhost:8081/POS_BackEnd/customer",
+        type: "GET",
+        headers: {"Content-Type": "application/json"},
+        success: (res) => {
+            // Assuming `res` is an array of customer objects
+            res.forEach(customer => {
+                const option = document.createElement("option");
+                option.value = customer.id; // Set value to customer ID
+                option.text = customer.id; // Display customer ID in dropdown
+                $('#customerSelectID').append(option);
+            });
+        },
+        error: (res) => {
+            console.error('Error fetching customer data:', res);
+        }
     });
 }
 
@@ -34,35 +48,53 @@ $('#customerSelectID').on('focus', () => {
 });
 
 $('#customerSelectID').on('change', function() {
-    cusId = $('#customerSelectID option:selected').text();
+    const cusId = $('#customerSelectID').val(); // Get selected customer ID
 
     console.log('Selected Customer ID:', cusId);
 
-    // Find the selected customer object
-    const selectedCustomer = customers.find(customer => customer.cusId === cusId);
-    console.log('Selected Customer:', selectedCustomer);
-
-    // Update the input element with the customer's name if a customer is selected
-    if (selectedCustomer) {
-        $('#customerName').val(selectedCustomer.cusName); 
-    } else {
-        // If no customer is selected, clear the span element
-        $('#customerName').val("No customer selected"); 
-    }
+    // Fetch customer data from the server to find the selected customer
+    $.ajax({
+        url: "http://localhost:8081/POS_BackEnd/customer?id="+cusId,
+        type: "GET",
+        headers: {"Content-Type": "application/json"},
+        success: (res) => {
+            console.log('Selected Customer:', res);
+            // Update the input element with the customer's name
+            $('#customerName').val(res.name);
+        },
+        error: (res) => {
+            console.error('Error fetching selected customer data:', res);
+            $('#customerName').val("Error fetching customer data");
+        }
+    });
 });
+
     
 function updateProductIDs() {
     $('#productSelectID').empty();
+
     const defaultOption = document.createElement("option");
-        
     defaultOption.text = "Select product ID";
+    defaultOption.value = ""; // Set an empty value for the default option
     $('#productSelectID').append(defaultOption);
-        
-    products.forEach(product => {
-        const option = document.createElement("option");
-        option.value = JSON.stringify(product);
-        option.text = product.proId;
-        $('#productSelectID').append(option);
+
+    // Fetch customer data from the server
+    $.ajax({
+        url: "http://localhost:8081/POS_BackEnd/product",
+        type: "GET",
+        headers: {"Content-Type": "application/json"},
+        success: (res) => {
+            // Assuming `res` is an array of customer objects
+            res.forEach(product => {
+                const option = document.createElement("option");
+                option.value = product.id; // Set value to customer ID
+                option.text = product.id; // Display customer ID in dropdown
+                $('#productSelectID').append(option);
+            });
+        },
+        error: (res) => {
+            console.error('Error fetching product data:', res);
+        }
     });
 }
 
@@ -75,13 +107,24 @@ $('#productSelectID').on('change', function() {
 
     console.log('Selected product ID:', prodId);
 
-    // Find the selected product object
-    const selectedProduct = products.find(product => product.proId === prodId); 
-    console.log('Selected product:', selectedProduct);
-    $('#productName').val(selectedProduct.proName); 
-    $('#productType').val(selectedProduct.proType); 
-    $('#productQTY').val(selectedProduct.proQty); 
-    $('#productPrice').val(selectedProduct.proPrice); 
+    $.ajax({
+        url: "http://localhost:8081/POS_BackEnd/product?id="+prodId,
+        type: "GET",
+        headers: {"Content-Type": "application/json"},
+        success: (res) => {
+            console.log('Selected Customer:', res);
+            // Update the input element with the customer's name
+            $('#productName').val(res.name);
+            $('#productType').val(res.type);
+            $('#productQTY').val(res.qty);
+            $('#productPrice').val(res.price);
+        },
+        error: (res) => {
+            console.error('Error fetching selected product data:', res);
+            $('#customerName').val("Error fetching product data");
+        }
+    });
+
 });
 
 function loadTableCart() {

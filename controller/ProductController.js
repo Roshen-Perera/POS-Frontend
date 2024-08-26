@@ -1,6 +1,9 @@
 import ProductModel from "/model/ProductModel.js";
 import {products} from "/db/DB.js";
 
+loadTableProduct();
+totalProducts();
+
 var recordIndex = undefined;
 
 let isIDError = true;
@@ -89,6 +92,31 @@ function validatePrice(){
     }
 }
 
+export function loadTableProduct(){
+    $('#product-table').empty();
+    $.ajax({
+        url: "http://localhost:8081/POS_BackEnd/product",
+        method: "GET",
+        success: function (results) {
+            $('#product-table').empty();
+            results.forEach(function (post) {
+                var record = `<tr>
+                                <td>${post.id}</td>     
+                                <td>${post.name}</td>
+                                <td>${post.type}</td>     
+                                <td>${post.qty}</td>
+                                <td>${post.price}</td>
+                            </tr>`;
+                $('#product-table').append(record);
+            });
+        },
+        error: function (error) {
+            console.log(error);
+            alert("An error occurred while fetching the posts.");
+        }
+    });
+}
+
 $('#btnSearchProduct').on('click', () => {
     let proId = $('#pro-custom-id').val();
     $.ajax({
@@ -165,19 +193,6 @@ $('#product-add-btn').on('click', () => {
     }
 });
 
-export function loadTableProduct(){
-    $('#product-table').empty();
-    products.map((item, index) =>{
-        let record = `<tr>
-                            <td class="pro_id" scope="row">${item.proId}</td>     
-                            <td class="pro_name">${item.proName}</td>
-                            <td class="pro_type">${item.proType}</td>     
-                            <td class="pro_qty">${item.proQty}</td>
-                            <td class="pro_price">${item.proPrice}</td>
-                        </tr>`
-        $('#product-table').append(record);
-    });
-}
 
 $("#product-table").on('click', 'tr',function()  {
     // console.log("Adoo");
@@ -252,10 +267,6 @@ $('#product-delete-btn').on('click', () => {
             console.error(res);
         }
     });
-
-
-
-
     loadTableProduct();
     totalProducts();
     clearFields();
@@ -263,6 +274,10 @@ $('#product-delete-btn').on('click', () => {
 
 $('#product-clear-btn').on('click', () => {
     clearFields();
+});
+
+$('#btnGetAllProducts').on('click', () => {
+    loadTableProduct();
 });
 
 function clearFields() {
@@ -274,7 +289,7 @@ function clearFields() {
 }
 
 function totalProducts() {
-    var totalProduct = products.length;
-    console.log(totalProduct);
+    var totalProduct = $('#product-table').length;
+    console.log("s"+totalProduct);
     $('#productCount').text(totalProduct);
 }

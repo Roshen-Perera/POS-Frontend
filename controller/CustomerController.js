@@ -97,7 +97,33 @@ $("#cus-custom-address").keyup(function () {
 $("#cus-custom-mobile").keyup(function () {
     validateMobile();
 })
+
 */
+
+export function loadTableCustomer() {
+    $('#customer-table').empty();
+    $.ajax({
+        url: "http://localhost:8081/POS_BackEnd/customer",
+        method: "GET",
+        success: function (results) {
+            $('#customer-table').empty();
+            results.forEach(function (post) {
+                var record = `<tr>
+                                <td>${post.id}</td>     
+                                <td>${post.name}</td>
+                                <td>${post.address}</td>     
+                                <td>${post.phone}</td>
+                            </tr>`;
+                $('#customer-table').append(record);
+            });
+        },
+        error: function (error) {
+            console.log(error);
+            alert("An error occurred while fetching the posts.");
+        }
+    });
+}
+
 $('#btnSearchCustomer').on('click', () => {
     let cusId = $('#cus-custom-id').val();
     $.ajax({
@@ -175,30 +201,6 @@ $('#customer-add-btn').on('click', () => {
         return false;
     }
 });
-
-export function loadTableCustomer() {
-    $('#customer-table').empty();
-    $.ajax({
-        url: "http://localhost:8081/POS_BackEnd/customer",
-        method: "GET",
-        success: function (results) {
-            $('#customer-table').empty();
-            results.forEach(function (post) {
-                var record = `<tr>
-                                <td>${post.id}</td>     
-                                <td>${post.name}</td>
-                                <td>${post.address}</td>     
-                                <td>${post.phone}</td>
-                            </tr>`;
-                $('#customer-table').append(record);
-            });
-        },
-        error: function (error) {
-            console.log(error);
-            alert("An error occurred while fetching the posts.");
-        }
-    });
-}
 
 /*$("#customer-table").on('click', 'tr', function () {
     // console.log("Adoo");
