@@ -3,6 +3,8 @@ import {customers, products} from "/db/DB.js";
 
 var recordIndex = undefined;
 
+loadTableCustomer();
+
 $("#customerIdCheck").hide();
 let isError = true;
 
@@ -162,16 +164,10 @@ $('#customer-add-btn').on('click', () => {
             error: (res) => {
                 console.error(res);
             }
-            // data: JSON.stringify({
-            //     "id": 3,
-            //     "name": "Hulk",
-            //     "address": "NYC",
-            //     "phone": "0760199035"
-            // }),
         });
 
         //customers.push(customer)
-        //loadTableCustomer();
+        loadTableCustomer();
         //totalCustomers();
         console.log(customer);
         clearFields();
@@ -182,27 +178,38 @@ $('#customer-add-btn').on('click', () => {
 
 export function loadTableCustomer() {
     $('#customer-table').empty();
-    customers.map((item, index) => {
-        let record = `<tr>
-                                <td class="cus_id" scope="row">${item.cusId}</td>     
-                                <td class="cus_name">${item.cusName}</td>
-                                <td class="cus_address">${item.cusAddress}</td>     
-                                <td class="cus_mobile">${item.cusMobile}</td>
-                            </tr>`
-        $('#customer-table').append(record);
+    $.ajax({
+        url: "http://localhost:8081/POS_BackEnd/customer",
+        method: "GET",
+        success: function (results) {
+            $('#customer-table').empty();
+            results.forEach(function (post) {
+                var record = `<tr>
+                                <td>${post.id}</td>     
+                                <td>${post.name}</td>
+                                <td>${post.address}</td>     
+                                <td>${post.phone}</td>
+                            </tr>`;
+                $('#customer-table').append(record);
+            });
+        },
+        error: function (error) {
+            console.log(error);
+            alert("An error occurred while fetching the posts.");
+        }
     });
 }
 
-$("#customer-table").on('click', 'tr', function () {
+/*$("#customer-table").on('click', 'tr', function () {
     // console.log("Adoo");
     recordIndex = $(this).index();
 
     console.log(recordIndex);
 
-    let customerId = $(this).find(".cus_id").text();
-    let customerName = $(this).find(".cus_name").text();
-    let customerAddress = $(this).find(".cus_address").text();
-    let customerMobile = $(this).find(".cus_mobile").text();
+    let customerId = $(this).find("id").text();
+    let customerName = $(this).find("name").text();
+    let customerAddress = $(this).find("address").text();
+    let customerMobile = $(this).find("phone").text();
 
     $("#cus-custom-id").val(customerId);
     $("#cus-custom-user").val(customerName);
@@ -213,7 +220,7 @@ $("#customer-table").on('click', 'tr', function () {
     // console.log(fName);
     // console.log(lName);
     // console.log(address);
-});
+});*/
 
 $("#customer-update-btn").on('click', () => {
     validateID();
@@ -284,6 +291,10 @@ $('#customer-delete-btn').on('click', () => {
 
 $('#customer-clear-btn').on('click', () => {
     clearFields();
+});
+
+$('#btnGetAllCustomer').on('click', () => {
+    loadTableCustomer();
 });
 
 function clearFields() {
