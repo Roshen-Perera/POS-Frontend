@@ -90,17 +90,28 @@ function validatePrice(){
 }
 
 $('#btnSearchProduct').on('click', () => {
-    let prodId = $('#pro-custom-id').val();
+    let proId = $('#pro-custom-id').val();
+    $.ajax({
+        url: "http://localhost:8081/POS_BackEnd/product?id="+proId,
+        type: "GET",
+        headers: {"Content-Type": "application/json"},
+        success: (res) => {
+            console.log(JSON.stringify(res));
+            $('#pro-custom-name').val(res.name);
+            $('#pro-custom-type').val(res.type);
+            $('#pro-custom-qty').val(res.qty);
+            $('#pro-custom-price').val(res.price);
+        },
+        error: (res) => {
+            console.error(res);
+        }
+    });
 
-    console.log('Selected product ID:', prodId);
+    console.log('Selected product ID:', proId);
 
     // Find the selected product object
-    const selectedProduct = products.find(product => product.proId === prodId);
-    console.log('Selected product:', selectedProduct);
-    $('#pro-custom-name').val(selectedProduct.proName);
-    $('#pro-custom-type').val(selectedProduct.proType);
-    $('#pro-custom-qty').val(selectedProduct.proQty);
-    $('#pro-custom-price').val(selectedProduct.proPrice);
+    // const res = products.find(product => product.proId === prodId);
+    // console.log('Selected product:', res);
 });
 
 $('#product-add-btn').on('click', () => {
