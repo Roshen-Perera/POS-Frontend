@@ -98,15 +98,24 @@ $("#cus-custom-mobile").keyup(function () {
 */
 $('#btnSearchCustomer').on('click', () => {
     let cusId = $('#cus-custom-id').val();
-
+    $.ajax({
+        url: "http://localhost:8081/POS_BackEnd/customer?id="+cusId,
+        type: "GET",
+        headers: {"Content-Type": "application/json"},
+        success: (res) => {
+            console.log(JSON.stringify(res));
+            $('#cus-custom-user').val(res.name);
+            $('#cus-custom-address').val(res.address);
+            $('#cus-custom-mobile').val(res.phone);
+        },
+        error: (res) => {
+            console.error(res);
+        }
+    });
     console.log('Selected product ID:', cusId);
-
     // Find the selected product object
-    const selectedProduct = customers.find(customer => customer.cusId === cusId);
-    console.log('Selected product:', selectedProduct);
-    $('#cus-custom-user').val(selectedProduct.cusName);
-    $('#cus-custom-address').val(selectedProduct.cusAddress);
-    $('#cus-custom-mobile').val(selectedProduct.cusMobile);
+    // const selectedProduct = customers.find(customer => customer.cusId === cusId);
+    // console.log('Selected product:', selectedProduct);
 });
 
 $('#customer-add-btn').on('click', () => {
