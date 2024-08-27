@@ -1,5 +1,5 @@
-import {customers, products, orderDetails, orders} from "/db/DB.js";
-import OrderDetailModel from "/model/OrderDetailModel.js"
+//import {customers, products, orderDetails, orders} from "/db/DB.js";
+//import OrderDetailModel from "/model/OrderDetailModel.js"
 import {loadTableProduct} from "./ProductController.js";
 import {loadTableCustomer} from "./CustomerController.js";
 
@@ -11,6 +11,7 @@ const date = new Date();
 let recordIndex = undefined;
 let orderDate = date.getFullYear()+"/"+date.getMonth()+"/"+date.getDate();
 
+loadTableCart()
 
 $('#orderDate').text(orderDate);
 
@@ -131,19 +132,31 @@ function loadTableCart() {
     $('#cart-table').empty();
     $('#order-table').empty();
     $('#dash-table').empty();
-
-    orderDetails.map((item, index) => {
-        let record = `<tr>
-                                <td class="order_id" scope="row">${item.orderId}</td>
-                                <td class="pro_name">${item.proName}</td>
-                                <td class="pro_type">${item.proType}</td>
-                                <td class="pro_qty">${item.proQty}</td>
-                                <td class="pro_price">${item.proPrice}</td>
-                                <td class="pro_total">${item.proTotal}</td>
+    $.ajax({
+        url: "http://localhost:8081/POS_BackEnd/orders",
+        method: "GET",
+        success: function (results) {
+            $('#cart-table').empty();
+            $('#order-table').empty();
+            $('#dash-table').empty();
+            results.forEach(function (post) {
+                let record = `<tr>
+                                <td class="order_id" scope="row">${post.orderId}</td>
+                                <td class="pro_name">${post.customerName}</td>
+                                <td class="pro_type">${post.productType}</td>
+                                <td class="pro_qty">${post.productQTYNeeded}</td>
+                                <td class="pro_price">${post.productPrice}</td>
+                                <td class="pro_total">${post.productTotal}</td>
                             </tr>`
-        $('#cart-table').append(record);
-        $('#order-table').append(record);
-        $('#dash-table').append(record);
+                $('#cart-table').append(record);
+                $('#order-table').append(record);
+                $('#dash-table').append(record);
+            });
+        },
+        error: function (error) {
+            console.log(error);
+            alert("An error occurred while fetching the posts.");
+        }
     });
 }
 
@@ -158,6 +171,9 @@ function clearFields(){
 
 $('#clear').on('click', () => {
     clearFields();
+    loadTableCustomer();
+    loadTableProduct();
+    loadTableCart();
 });
 
 $("#cart-table").on('click', 'tr', function () {
@@ -182,7 +198,7 @@ $('#addToCart').on('click', () => {
     //     alert("Blah")
     // } else {
         let orderId = $('#orderId').val();
-        let customerId = cusId;
+        let customerId = $('#customerSelectID option:selected').text();
         let customerName = $('#customerName').val();
         let productId = $('#productSelectID option:selected').text();
         let productName = $('#productName').val();
@@ -191,19 +207,55 @@ $('#addToCart').on('click', () => {
         let productPrice = $('#productPrice').val();
         let productTotal = productQTYNeeded*productPrice;
 
-        let orderDetail = new OrderDetailModel(orderId, customerId, customerName, productId, productName, productType, productQTYNeeded, productPrice, productTotal);
+    console.log('Order ID:', orderId);
+    console.log('Customer ID:', customerId);
+    console.log('Customer Name:', customerName);
+    console.log('Product ID:', productId);
+    console.log('Product Name:', productName);
+    console.log('Product Type:', productType);
+    console.log('Quantity Needed:', productQTYNeeded);
+    console.log('Product Price:', productPrice);
+    console.log('Product Total:', productTotal);
 
-        const selectedProduct = products.find(product => product.proId === productId)
-        selectedProduct.proQty = selectedProduct.proQty - $('#productQtyNeeded').val();
-        console.log("Product Qty: "+selectedProduct.proQty);
+    let order = {
+        orderId :orderId,
+        customerId: customerId,
+        customerName: customerName,
+        productId: productId,
+        productName: productName,
+        productType: productType,
+        productQTYNeeded: productQTYNeeded,
+        productPrice: productPrice,
+        productTotal: productTotal
+    }
 
-        orderDetails.push(orderDetail);
+    const orderJSON = JSON.stringify(order)
+    console.log(orderJSON);
+    $.ajax({
+        url: "http://localhost:8081/POS_BackEnd/orders",
+        type: "POST",
+        data : orderJSON,
+        headers: {"Content-Type": "application/json"},
+        success: (res) => {
+            console.log(JSON.stringify(res));
+        },
+        error: (res) => {
+            console.error(res);
+        }
+    });
+        // let orderDetail = new OrderDetailModel(orderId, customerId, customerName, productId, productName, productType, productQTYNeeded, productPrice, productTotal);
+        //
+        // const selectedProduct = products.find(product => product.proId === productId)
+        // selectedProduct.proQty = selectedProduct.proQty - $('#productQtyNeeded').val();
+        // console.log("Product Qty: "+selectedProduct.proQty);
+        //
+        // orderDetails.push(orderDetail);
 
         loadTableCustomer();
         loadTableProduct();
         loadTableCart();
-        totalOrders();
-        console.log(orderDetails);
+        //totalOrders();
+        //console.log(orderDetails);
         clearFields();
     console.log(orderId);
 });
@@ -216,7 +268,7 @@ $('#removeFromCart').on('click', () => {
 });
 
 function totalOrders() {
-    let totalOrder = orders.length
+    //let totalOrder = orders.length
     console.log("Customer Count: "+totalOrder);
     $('#orderCount').text(totalOrder);
 }
