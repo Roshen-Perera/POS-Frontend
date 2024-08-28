@@ -288,8 +288,6 @@ $('#customer-delete-btn').on('click', () => {
             console.error(res);
         }
     });
-    totalCustomers();
-
     clearFields();
 });
 

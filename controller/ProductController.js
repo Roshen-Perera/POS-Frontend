@@ -264,8 +264,6 @@ $('#product-delete-btn').on('click', () => {
             console.error(res);
         }
     });
-
-    totalProducts();
     clearFields();
 });
 
