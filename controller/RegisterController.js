@@ -1,5 +1,3 @@
-import {users} from "../db/DB.js";
-
 $('#reg-btn').click(function(e) {
     e.preventDefault();
     var username = $('#reg-custom-user').val();
@@ -11,19 +9,27 @@ $('#reg-btn').click(function(e) {
         console.log("Empty fields detected");
         return false;
     }
-    // Check if username is already taken
-    if (users.find(user => user.username === username)) {
-        alert("Username already exists");
-        return;
-    }
 
     let user = {
-        username: username,
-        emailAddress: emailAddress,
+        name: username,
+        email: emailAddress,
         password: password
     }
 
-    users.push(user);
-    console.log(users)
-    alert("User added successfully")
+    const userJSON = JSON.stringify(user)
+    console.log(userJSON);
+    $.ajax({
+        url: "http://localhost:8081/POS_BackEnd/register",
+        type: "POST",
+        data : userJSON,
+        headers: {"Content-Type": "application/json"},
+        success: (res) => {
+            console.log(JSON.stringify(res));
+            alert("User added successfully")
+        },
+        error: (res) => {
+            console.error(res);
+            alert("User not added successfully")
+        }
+    });
 });

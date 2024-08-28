@@ -1,5 +1,3 @@
-import {users} from "../db/DB.js";
-
 $('#login-btn').click(function(e) {
     e.preventDefault();
 
@@ -15,19 +13,25 @@ $('#login-btn').click(function(e) {
         return false;
     }
 
-    var user = users.find(user => user.username === loginUsername && user.password === loginPassword);
-
-    if (user) {
-        alert('Login successful');
-        $("#navigation").css({ display: "block" });
-        $("#login-page").css({ display: "none" });
-        $("#register-page").css({ display: "none" });
-        $("#dashboard-page").css({ display: "block" });
-        $("#customer-page").css({ display: "none" });
-        $("#product-page").css({ display: "none" });
-        $("#order-page").css({ display: "none" });
-        $("#neworder-page").css({ display: "none" });
-    } else {
-        alert('Invalid username or password');
-    }
+    $.ajax({
+        url: "http://localhost:8081/POS_BackEnd/login?name="+loginUsername+"&password="+loginPassword,
+        type: "POST",
+        headers: {"Content-Type": "application/json"},
+        success: (res) => {
+            console.log(JSON.stringify(res));
+            alert('Login successful');
+            $("#navigation").css({ display: "block" });
+            $("#login-page").css({ display: "none" });
+            $("#register-page").css({ display: "none" });
+            $("#dashboard-page").css({ display: "block" });
+            $("#customer-page").css({ display: "none" });
+            $("#product-page").css({ display: "none" });
+            $("#order-page").css({ display: "none" });
+            $("#neworder-page").css({ display: "none" });
+        },
+        error: (res) => {
+            console.error(res);
+            alert('Invalid username or password');
+        }
+    });
 });
