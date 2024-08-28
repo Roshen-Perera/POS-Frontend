@@ -1,8 +1,4 @@
-import ProductModel from "/model/ProductModel.js";
-import {products} from "/db/DB.js";
-
 loadTableProduct();
-totalProducts();
 
 var recordIndex = undefined;
 
@@ -92,7 +88,7 @@ function validatePrice(){
     }
 }
 
-export function loadTableProduct(){
+ export function loadTableProduct(){
     $('#product-table').empty();
     $.ajax({
         url: "http://localhost:8081/POS_BackEnd/product",
@@ -109,6 +105,7 @@ export function loadTableProduct(){
                             </tr>`;
                 $('#product-table').append(record);
             });
+            $('#productCount').text(results.length);
         },
         error: function (error) {
             console.log(error);
@@ -187,7 +184,6 @@ $('#product-add-btn').on('click', () => {
         });
 
         totalProducts();
-        console.log(products);
         clearFields();
     } else {
         return false;
@@ -289,8 +285,4 @@ function clearFields() {
     $('#pro-custom-price').val("");
 }
 
-function totalProducts() {
-    var totalProduct = $('#product-table').length;
-    console.log("s"+totalProduct);
-    $('#productCount').text(totalProduct);
-}
+

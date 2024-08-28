@@ -1,5 +1,3 @@
-import CustomerModel from "/model/CustomerModel.js"
-import {customers, products} from "/db/DB.js";
 
 var recordIndex = undefined;
 
@@ -116,6 +114,7 @@ export function loadTableCustomer() {
                             </tr>`;
                 $('#customer-table').append(record);
             });
+            $('#customerCount').text(results.length);
         },
         error: function (error) {
             console.log(error);
@@ -307,10 +306,4 @@ function clearFields() {
     $('#cus-custom-user').val('');
     $('#cus-custom-address').val('');
     $('#cus-custom-mobile').val('');
-}
-
-function totalCustomers() {
-    let totalCustomer = customers.length
-    console.log("Customer Count: "+totalCustomer);
-    $('#customerCount').text(totalCustomer);
 }

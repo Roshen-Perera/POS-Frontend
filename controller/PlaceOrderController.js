@@ -1,8 +1,4 @@
-//import {customers, products, orderDetails, orders} from "/db/DB.js";
-//import OrderDetailModel from "/model/OrderDetailModel.js"
 import {loadTableProduct} from "./ProductController.js";
-import {loadTableCustomer} from "./CustomerController.js";
-
 
 let cusId = null;
 
@@ -12,7 +8,6 @@ let recordIndex = undefined;
 let orderDate = date.getFullYear()+"/"+date.getMonth()+"/"+date.getDate();
 
 loadTableCart()
-
 $('#orderDate').text(orderDate);
 
 function updateCustomerIDs() {
@@ -152,6 +147,7 @@ function loadTableCart() {
                 $('#order-table').append(record);
                 $('#dash-table').append(record);
             });
+            $('#orderCount').text(results.length);
         },
         error: function (error) {
             console.log(error);
@@ -238,9 +234,8 @@ $('#addToCart').on('click', () => {
         headers: {"Content-Type": "application/json"},
         success: (res) => {
             console.log(JSON.stringify(res));
-            loadTableCustomer();
-            loadTableProduct();
             loadTableCart();
+            loadTableProduct();
         },
         error: (res) => {
             console.error(res);
@@ -275,9 +270,3 @@ $('#removeFromCart').on('click', () => {
         }
     });
 });
-
-function totalOrders() {
-    //let totalOrder = orders.length
-    console.log("Customer Count: "+totalOrder);
-    $('#orderCount').text(totalOrder);
-}
