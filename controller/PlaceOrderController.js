@@ -238,6 +238,9 @@ $('#addToCart').on('click', () => {
         headers: {"Content-Type": "application/json"},
         success: (res) => {
             console.log(JSON.stringify(res));
+            loadTableCustomer();
+            loadTableProduct();
+            loadTableCart();
         },
         error: (res) => {
             console.error(res);
@@ -251,9 +254,6 @@ $('#addToCart').on('click', () => {
         //
         // orderDetails.push(orderDetail);
 
-        loadTableCustomer();
-        loadTableProduct();
-        loadTableCart();
         //totalOrders();
         //console.log(orderDetails);
         clearFields();
@@ -261,10 +261,19 @@ $('#addToCart').on('click', () => {
 });
 
 $('#removeFromCart').on('click', () => {
-    orderDetails.splice(recordIndex, 1);
-    loadTableCart();
-    totalOrders();
-    clearFields();
+    let orderId = $('#orderId').val();
+    $.ajax({
+        url: "http://localhost:8081/POS_BackEnd/orders?id="+orderId,
+        type: "DELETE",
+        headers: {"Content-Type": "application/json"},
+        success: (res) => {
+            console.log(JSON.stringify(res));
+            loadTableCart();
+        },
+        error: (res) => {
+            console.error(res);
+        }
+    });
 });
 
 function totalOrders() {

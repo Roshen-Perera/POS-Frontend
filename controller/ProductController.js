@@ -173,6 +173,7 @@ $('#product-add-btn').on('click', () => {
             headers: {"Content-Type": "application/json"},
             success: (res) => {
                 console.log(JSON.stringify(res));
+                loadTableProduct();
             },
             error: (res) => {
                 console.error(res);
@@ -184,7 +185,7 @@ $('#product-add-btn').on('click', () => {
             //     "phone": "0760199035"
             // }),
         });
-        loadTableProduct();
+
         totalProducts();
         console.log(products);
         clearFields();
@@ -236,6 +237,7 @@ $("#product-update-btn").on('click', () => {
         headers: {"Content-Type": "application/json"},
         success: (res) => {
             console.log(JSON.stringify(res));
+            loadTableProduct();
         },
         error: (res) => {
             console.error(res);
@@ -247,8 +249,6 @@ $("#product-update-btn").on('click', () => {
         //     "phone": "0760199035"
         // }),
     });
-
-    loadTableProduct();
     clearFields();
 });
 
@@ -262,12 +262,13 @@ $('#product-delete-btn').on('click', () => {
         headers: {"Content-Type": "application/json"},
         success: (res) => {
             console.log(JSON.stringify(res));
+            loadTableProduct();
         },
         error: (res) => {
             console.error(res);
         }
     });
-    loadTableProduct();
+
     totalProducts();
     clearFields();
 });

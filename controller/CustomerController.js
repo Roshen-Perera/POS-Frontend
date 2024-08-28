@@ -186,6 +186,7 @@ $('#customer-add-btn').on('click', () => {
             headers: {"Content-Type": "application/json"},
             success: (res) => {
                 console.log(JSON.stringify(res));
+                loadTableCustomer();
             },
             error: (res) => {
                 console.error(res);
@@ -193,7 +194,7 @@ $('#customer-add-btn').on('click', () => {
         });
 
         //customers.push(customer)
-        loadTableCustomer();
+
         //totalCustomers();
         console.log(customer);
         clearFields();
@@ -250,6 +251,7 @@ $("#customer-update-btn").on('click', () => {
             headers: {"Content-Type": "application/json"},
             success: (res) => {
                 console.log(JSON.stringify(res));
+                loadTableCustomer();
             },
             error: (res) => {
                 console.error(res);
@@ -263,7 +265,7 @@ $("#customer-update-btn").on('click', () => {
         });
 
 
-        loadTableCustomer();
+
         clearFields();
     } else {
         return false;
@@ -281,13 +283,14 @@ $('#customer-delete-btn').on('click', () => {
         headers: {"Content-Type": "application/json"},
         success: (res) => {
             console.log(JSON.stringify(res));
+            loadTableCustomer();
         },
         error: (res) => {
             console.error(res);
         }
     });
     totalCustomers();
-    loadTableCustomer();
+
     clearFields();
 });
 
